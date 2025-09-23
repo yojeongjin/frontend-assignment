@@ -27,10 +27,7 @@ const Nav = styled.nav`
   justify-content: space-between;
   margin: 0 auto;
   padding: 0 12px;
-  border-bottom: 1px solid ${(props) => props.theme.gray_03};
-  @media (min-width: 1200px) {
-    border: none;
-  }
+  // border-bottom: 1px solid ${(props) => props.theme.gray_03};
 `;
 
 const Profile = styled(Link)`
@@ -38,7 +35,7 @@ const Profile = styled(Link)`
   width: 38px;
   height: 38px;
   border-radius: 50%;
-  @media (min-width: 1200px) {
+  @media (min-width: 1000px) {
     display: none;
   }
 `;

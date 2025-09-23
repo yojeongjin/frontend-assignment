@@ -1,0 +1,84 @@
+import styled from 'styled-components';
+// icons
+import { MdVerified } from 'react-icons/md';
+import { TbBrandTwitterFilled } from 'react-icons/tb';
+
+export default function FeedHeader() {
+  return (
+    <ContentHeader>
+      <UserWrapper>
+        <UserProfile src="./profile.jpeg" alt="사용자 이미지" />
+        <UserInfo>
+          <UserName>
+            꿀꿀이
+            <UserBadge aria-label="인증된 계정">
+              <MdVerified />
+            </UserBadge>
+          </UserName>
+          <UserId aria-label="사용자 아이디">@osolku</UserId>
+        </UserInfo>
+      </UserWrapper>
+
+      <ContentInfo>
+        <ContentCategory>
+          <TbBrandTwitterFilled aria-hidden="true" />
+          음식
+        </ContentCategory>
+        <ContentTime>15분 전</ContentTime>
+      </ContentInfo>
+    </ContentHeader>
+  );
+}
+
+/* ===== styles ===== */
+
+const ContentHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+
+const UserWrapper = styled.div`
+  display: flex;
+  gap: 6px;
+`;
+
+const UserProfile = styled.img`
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  object-fit: cover;
+`;
+
+const UserInfo = styled.div``;
+
+const UserName = styled.h4`
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-weight: 600;
+`;
+
+const UserBadge = styled.strong`
+  display: flex;
+  align-items: center;
+  font-size: 16px;
+  color: ${(props) => props.theme.primary_01};
+`;
+
+const UserId = styled.span`
+  // font-weight: 500;
+  font-size: 14px;
+  color: ${(props) => props.theme.gray_02};
+`;
+
+const ContentInfo = styled.div`
+  display: flex;
+  align-items: flex-end;
+  flex-direction: column;
+`;
+
+const ContentCategory = styled(UserName)`
+  color: ${(props) => props.theme.primary_01};
+`;
+
+const ContentTime = styled(UserId)``;
