@@ -46,6 +46,7 @@ const CategoryMenu = styled.ul`
 `;
 
 const CategoryItem = styled.li<{ $active: boolean }>`
+  position: relative;
   min-width: 52px;
   height: 46px;
   display: flex;

@@ -1,9 +1,5 @@
 export const mockCategories = [
   {
-    id: 0,
-    name: '전체',
-  },
-  {
     id: 1,
     name: '요리',
   },

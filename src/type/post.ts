@@ -38,3 +38,12 @@ export interface Comment {
   likes: number;
   isLiked: boolean;
 }
+
+export interface PostReqType {
+  userId: number;
+  content: string;
+  images: string[];
+  category: number;
+  categoryName: string;
+  createdAt: string;
+}

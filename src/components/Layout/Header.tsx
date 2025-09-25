@@ -10,9 +10,6 @@ export default function Header() {
       <Logo href="/">
         <TbBrandTwitterFilled />
       </Logo>
-
-      {/* profile */}
-      <Profile href="/"></Profile>
     </Nav>
   );
 }
@@ -28,16 +25,6 @@ const Nav = styled.nav`
   margin: 0 auto;
   padding: 0 12px;
   // border-bottom: 1px solid ${(props) => props.theme.gray_03};
-`;
-
-const Profile = styled(Link)`
-  border: 1px solid black;
-  width: 38px;
-  height: 38px;
-  border-radius: 50%;
-  @media (min-width: 1000px) {
-    display: none;
-  }
 `;
 
 const Logo = styled(Link)`
