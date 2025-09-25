@@ -1,3 +1,7 @@
+export interface PostProps {
+  initialPosts: PostResType[];
+  pageSize: number;
+}
 // 게시물
 export interface PostResType {
   id: number;

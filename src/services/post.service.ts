@@ -8,6 +8,16 @@ const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 // 로컬에서 좋아요/리트윗 상태 저장용
 const state: Record<string, PostResType> = {};
 
+// 게시글 가져오기
+export const getPosts = async (page = 1, limit = 10): Promise<PostResType[]> => {
+  await delay(1000);
+
+  const start = (page - 1) * limit;
+  const end = start + limit;
+
+  return mockPosts.slice(start, end);
+};
+
 // 게시글 좋아요
 export const toggleLike = async (postId: number) => {
   await delay(300);

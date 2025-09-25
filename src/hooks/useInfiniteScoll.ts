@@ -1,37 +1,42 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 
 interface InfiniteScrollType {
-  callbackFn: () => void;
   hasNextPage: boolean;
+  loadMoreFn: () => Promise<void> | void;
 }
 
-export default function useInfiniteScoll({ callbackFn, hasNextPage }: InfiniteScrollType) {
+export default function useInfiniteScoll({ hasNextPage, loadMoreFn }: InfiniteScrollType) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const observerEl = useRef<HTMLDivElement>(null);
 
   const handleObserver = useCallback(
-    (entries: IntersectionObserverEntry[]) => {
-      const target = entries[0];
-      if (target.isIntersecting && !isLoading && hasNextPage) {
+    async (entries: IntersectionObserverEntry[]) => {
+      const [target] = entries;
+      if (!hasNextPage || isLoading) return;
+
+      if (target.isIntersecting) {
         setIsLoading(true);
-        callbackFn();
-        setIsLoading(false);
+        try {
+          await loadMoreFn();
+        } finally {
+          setIsLoading(false);
+        }
       }
     },
-    [callbackFn, isLoading, hasNextPage]
+    [hasNextPage, isLoading, loadMoreFn]
   );
 
   useEffect(() => {
-    const observer = new IntersectionObserver(handleObserver, { threshold: 0 });
-    const currentEl = observerEl.current;
-    if (currentEl) {
-      observer.observe(currentEl);
-    }
-    return () => {
-      if (currentEl) {
-        observer.unobserve(currentEl);
-      }
-    };
+    if (!observerEl.current) return;
+
+    const observer = new IntersectionObserver(handleObserver, {
+      threshold: 0,
+      rootMargin: '100px',
+    });
+    observer.observe(observerEl.current);
+
+    return () => observer.disconnect();
   }, [handleObserver]);
+
   return { observerEl, isLoading };
 }
