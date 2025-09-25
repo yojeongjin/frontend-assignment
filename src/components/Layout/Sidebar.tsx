@@ -17,7 +17,7 @@ export default function Sidebar() {
       <SidebarItem href="/" $islink={router.pathname === '/'}>
         홈
       </SidebarItem>
-      <SidebarItem href="/compose" $islink={router.pathname === '/create'}>
+      <SidebarItem href="/create" $islink={router.pathname === '/create'}>
         작성하기
       </SidebarItem>
       <SidebarItem href="/profile" $islink={router.pathname === '/profile'}>
@@ -30,7 +30,7 @@ export default function Sidebar() {
 const SidebarMenu = styled.nav`
   display: grid;
   gap: 6px;
-  padding: 16px;
+  padding: 0 16px;
 `;
 
 const Logo = styled(Link)`

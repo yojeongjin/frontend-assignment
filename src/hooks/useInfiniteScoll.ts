@@ -4,6 +4,19 @@ interface InfiniteScrollType {
   hasNextPage: boolean;
   loadMoreFn: () => Promise<void> | void;
 }
+/**
+ * useInfiniteScroll
+ *
+ * @description
+ * IntersectionObserver를 활용하여 특정 엘리먼트가 화면에 보일 때 loadMoreFn을 호출
+ *
+ * - hasNextPage가 false면 더 이상 요청하지 않는다.
+ * - 로딩 중이면 중복 호출을 막는다.
+ *
+ * @returns
+ * - observerEl: 감시 대상이 될 ref
+ * - isLoading: 로딩 여부
+ */
 
 export default function useInfiniteScoll({ hasNextPage, loadMoreFn }: InfiniteScrollType) {
   const [isLoading, setIsLoading] = useState<boolean>(false);

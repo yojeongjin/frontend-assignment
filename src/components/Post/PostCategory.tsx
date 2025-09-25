@@ -41,7 +41,8 @@ const CategoryMenu = styled.ul`
   justify-content: space-evenly;
   font-weight: 500;
   color: ${(props) => props.theme.gray_02};
-  border-bottom: 6px solid ${(props) => props.theme.gray_03};
+  border-bottom: 1px solid ${(props) => props.theme.gray_03};
+  overflow-x: scroll;
 `;
 
 const CategoryItem = styled.li<{ $active: boolean }>`
@@ -52,5 +53,6 @@ const CategoryItem = styled.li<{ $active: boolean }>`
   justify-content: center;
   cursor: pointer;
   border-bottom: ${(props) => (props.$active ? '3px solid #1D9BF0' : 'none')};
-  // border: 1px solid black;
 `;
+
+const Filter = styled.div``;

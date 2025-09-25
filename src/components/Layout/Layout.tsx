@@ -56,7 +56,6 @@ const HeaderBase = styled.header`
   inset: 0 0 auto 0; /* top:0; left:0; right:0; */
   height: ${HEADER_H}px;
   z-index: 10;
-
   /* 데스크톱 */
   @media (min-width: 1000px) {
     display: none;

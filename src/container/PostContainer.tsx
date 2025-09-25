@@ -22,7 +22,13 @@ export default function PostContainer({ initialPosts, pageSize }: PostProps) {
   const [page, setPage] = useState(1);
   const [hasNextPage, setHasNextPage] = useState(initialPosts.length === pageSize);
 
-  // 게시물 더 가져오기
+  /**
+   * 게시물 더 가져오기
+   *
+   * @description
+   * - page + 1 호출 → posts에 추가
+   * - 마지막 페이지면 hasNextPage false로 업데이트
+   */
   const loadMoreFn = useCallback(async () => {
     const nextPage = page + 1;
     const updated = await getPosts(nextPage, pageSize);
@@ -39,14 +45,22 @@ export default function PostContainer({ initialPosts, pageSize }: PostProps) {
   // 무한 스크롤 hook
   const { observerEl, isLoading } = useInfiniteScoll({ hasNextPage, loadMoreFn });
 
-  // 좋아요
+  /**
+   * 좋아요 토글
+   *
+   * @param postId 대상 게시물 ID
+   */
   const handleLike = async (postId: number) => {
     const updated = await toggleLike(postId);
 
     setPosts((prev) => prev.map((prev) => (prev.id === postId ? updated : prev)));
   };
 
-  // 리트윗
+  /**
+   * 리트윗 토글
+   *
+   * @param postId 대상 게시물 ID
+   */
   const handleRetweet = async (postId: number) => {
     const updated = await toggleRetweet(postId);
 

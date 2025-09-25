@@ -1,19 +1,69 @@
+import { useState } from 'react';
 import styled, { css } from 'styled-components';
+import Modal from '../Common/Modal';
+// swiper
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Navigation, Pagination } from 'swiper/modules';
+// swiper style
+import 'swiper/css';
+import 'swiper/css/pagination';
+import 'swiper/css/navigation';
+
 // type
 import { PostResType } from '@/type/post';
 
 type PostImgProps = Pick<PostResType, 'images'>;
 
 export default function PostImg({ images }: PostImgProps) {
+  const [openImg, setOpenImg] = useState(false);
+  const [clickedIndex, setClickedIndex] = useState(0);
+
   if (!images || images.length === 0) return null;
   const count = Math.min(images.length, 4);
 
   return (
-    <ImgWrapper $count={count}>
-      {images.map((src, i) => (
-        <Img key={i} src={src} alt={`게시물 이미지 ${i + 1}`} loading="lazy" />
-      ))}
-    </ImgWrapper>
+    <>
+      <ImgWrapper $count={count}>
+        {images.map((src, i) => (
+          <Img
+            key={src + i}
+            src={src}
+            alt={`게시물 이미지 ${i + 1}`}
+            loading="lazy"
+            onClick={() => {
+              setClickedIndex(i);
+              setOpenImg(true);
+            }}
+          />
+        ))}
+      </ImgWrapper>
+      {openImg && (
+        <Modal
+          onCloseModal={() => {
+            setOpenImg(false);
+          }}
+        >
+          <ImgSwiper>
+            <StyledSwiper
+              slidesPerView={1}
+              loop={true}
+              navigation
+              pagination={{
+                clickable: true,
+              }}
+              modules={[Navigation, Pagination]}
+              initialSlide={clickedIndex}
+            >
+              {images.map((img, i) => (
+                <SwiperSlide key={img + i}>
+                  <ModalImg src={img} alt={`게시물 이미지 ${i + 1}`} loading="lazy" />
+                </SwiperSlide>
+              ))}
+            </StyledSwiper>
+          </ImgSwiper>
+        </Modal>
+      )}
+    </>
   );
 }
 
@@ -94,8 +144,7 @@ const ImgWrapper = styled.div<{ $count: number }>`
   max-height: 360px;
   display: grid;
   gap: 6px;
-  // margin-top: 12px;
-  border-radius: 12px;
+  border-radius: 8px;
   overflow: hidden;
   ${({ $count }) => layoutByCount[$count as 1 | 2 | 3 | 4]}
   @media (min-width: 1200px) {
@@ -112,3 +161,25 @@ const Img = styled.img`
   overflow: hidden;
   border-radius: 8px;
 `;
+
+// img swiper
+const ImgSwiper = styled.div`
+  border-radius: 8px;
+`;
+
+const StyledSwiper = styled(Swiper)`
+  border-radius: 8px;
+
+  .swiper-pagination-bullet-active {
+    background: #fff !important;
+    width: 9px;
+    height: 9px;
+  }
+  .swiper-button-prev,
+  .swiper-button-next {
+    // background: #fff !important;
+    color: #fff !important;
+  }
+`;
+
+const ModalImg = styled(Img)``;

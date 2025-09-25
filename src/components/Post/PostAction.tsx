@@ -58,10 +58,8 @@ export default function PostAction({ post, handleLike, handleRetweet }: PostActi
 const ActionBase = styled.div`
   display: flex;
   align-items: center;
-  // justify-content: flex-end;
   justify-content: space-between;
-  gap: 12px;
-  margin-top: 10px;
+  padding: 0 6px;
   color: ${(props) => props.theme.gray_02};
 `;
 
@@ -71,6 +69,8 @@ const ActionBtn = styled.button<{ $variant?: 'comment' | 'retweet' | 'like'; $ac
   gap: 4px;
   padding: 6px 8px;
   border-radius: 8px;
+  font-weight: 500;
+  font-size: 14px;
   color: ${({ $variant, $active, theme }) =>
     $active
       ? // 클릭된 상태면 variant별 메인 색상
@@ -82,7 +82,6 @@ const ActionBtn = styled.button<{ $variant?: 'comment' | 'retweet' | 'like'; $ac
       : theme.gray_02};
 
   &:hover {
-    font-weight: ${({ $variant }) => ($variant === 'comment' ? 600 : 'inherit')};
     color: ${({ $variant, theme }) =>
       $variant === 'retweet' ? theme.retweet : $variant === 'like' ? theme.like : 'gray_01'};
   }
@@ -91,5 +90,5 @@ const ActionBtn = styled.button<{ $variant?: 'comment' | 'retweet' | 'like'; $ac
 const Icon = styled.span`
   display: flex;
   align-items: center;
-  font-size: 16px;
+  font-size: 17px;
 `;
