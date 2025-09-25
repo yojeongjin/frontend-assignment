@@ -1,11 +1,12 @@
-// components/Layout.tsx
 import Link from 'next/link';
 import styled from 'styled-components';
+// type
+import { LayoutProps } from '@/type/common';
+// components
 import Header from './Header';
 import Sidebar from './Sidebar';
+// icon
 import { IoAdd } from 'react-icons/io5';
-
-type LayoutProps = { children: React.ReactNode };
 
 export default function Layout({ children }: LayoutProps) {
   return (
@@ -100,7 +101,7 @@ const Main = styled.main`
 
 const FloatingButton = styled(Link)`
   position: fixed;
-  bottom: 24px;
+  bottom: 42px;
   right: 24px;
   background: ${({ theme }) => theme.primary_01};
   width: 56px;

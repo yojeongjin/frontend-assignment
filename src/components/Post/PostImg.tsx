@@ -1,14 +1,17 @@
-// components/feed/ImageGrid.tsx
 import styled, { css } from 'styled-components';
+// type
+import { PostResType } from '@/type/post';
 
-export default function FeedImg() {
-  const images = ['./profile', './profile', './profile', './profile'];
+type PostImgProps = Pick<PostResType, 'images'>;
+
+export default function PostImg({ images }: PostImgProps) {
+  if (!images || images.length === 0) return null;
   const count = Math.min(images.length, 4);
 
   return (
     <ImgWrapper $count={count}>
       {images.map((src, i) => (
-        <Img key={i} src={`${src}.jpeg`} alt={`게시물 이미지 ${i + 1}`} loading="lazy" />
+        <Img key={i} src={src} alt={`게시물 이미지 ${i + 1}`} loading="lazy" />
       ))}
     </ImgWrapper>
   );

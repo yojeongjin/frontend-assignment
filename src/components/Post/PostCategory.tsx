@@ -3,7 +3,7 @@ import styled from 'styled-components';
 // data
 import { mockCategories } from '@/datas/mockCategories';
 
-export default function FeedCategory() {
+export default function PostCategory() {
   const [activeIndex, setActiveIndex] = useState(0);
 
   return (

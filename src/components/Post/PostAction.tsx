@@ -1,24 +1,53 @@
 import styled from 'styled-components';
 // icons
 import { FaRegComment, FaRetweet, FaRegHeart, FaHeart } from 'react-icons/fa6';
+// type
+import { PostResType } from '@/type/post';
 
-export default function FeedAction() {
+interface PostActionProps {
+  post: PostResType;
+  handleLike: (id: number) => void | Promise<void>;
+  handleRetweet: (id: number) => void | Promise<void>;
+}
+
+export default function PostAction({ post, handleLike, handleRetweet }: PostActionProps) {
   return (
     <ActionBase>
       <ActionBtn $variant="comment">
         <Icon>
           <FaRegComment />
         </Icon>
+        {post.comments === 0 ? null : post.comments}
       </ActionBtn>
-      <ActionBtn $variant="retweet">
+      <ActionBtn
+        $variant="retweet"
+        $active={post.isRetweeted}
+        onClick={() => {
+          handleRetweet(post.id);
+        }}
+      >
         <Icon>
           <FaRetweet />
         </Icon>
+        {post.retweets === 0 ? null : post.retweets}
       </ActionBtn>
-      <ActionBtn $variant="like">
-        <Icon>
-          <FaRegHeart />
-        </Icon>
+      <ActionBtn
+        $variant="like"
+        $active={post.isLiked}
+        onClick={() => {
+          handleLike(post.id);
+        }}
+      >
+        {post.isLiked ? (
+          <Icon>
+            <FaHeart />
+          </Icon>
+        ) : (
+          <Icon>
+            <FaRegHeart />
+          </Icon>
+        )}
+        {post.likes === 0 ? null : post.likes}
       </ActionBtn>
     </ActionBase>
   );

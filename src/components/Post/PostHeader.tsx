@@ -2,29 +2,37 @@ import styled from 'styled-components';
 // icons
 import { MdVerified } from 'react-icons/md';
 import { TbBrandTwitterFilled } from 'react-icons/tb';
+// type
+import { PostResType } from '@/type/post';
+// utils
+import { timeAgo } from '@/utils/time';
 
-export default function FeedHeader() {
+type PostHeaderProps = Pick<PostResType, 'author' | 'categoryName' | 'createdAt'>;
+
+export default function PostHeader({ author, categoryName, createdAt }: PostHeaderProps) {
   return (
     <ContentHeader>
       <UserWrapper>
-        <UserProfile src="./profile.jpeg" alt="사용자 이미지" />
+        <UserProfile src={author.profileImage} alt="사용자 이미지" />
         <UserInfo>
           <UserName>
-            꿀꿀이
-            <UserBadge aria-label="인증된 계정">
-              <MdVerified />
-            </UserBadge>
+            {author.name}
+            {author.verified && (
+              <UserBadge aria-label="인증된 계정">
+                <MdVerified />
+              </UserBadge>
+            )}
           </UserName>
-          <UserId aria-label="사용자 아이디">@osolku</UserId>
+          <UserId aria-label="사용자 아이디">@{author.nickname}</UserId>
         </UserInfo>
       </UserWrapper>
 
       <ContentInfo>
         <ContentCategory>
           <TbBrandTwitterFilled aria-hidden="true" />
-          음식
+          {categoryName}
         </ContentCategory>
-        <ContentTime>15분 전</ContentTime>
+        <ContentTime>{timeAgo(createdAt)}</ContentTime>
       </ContentInfo>
     </ContentHeader>
   );

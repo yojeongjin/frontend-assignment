@@ -1,5 +1,6 @@
-import Feed from '@/components/Feed/Feed';
+// container
+import PostContainer from '@/container/PostContainer';
 
 export default function Home() {
-  return <Feed />;
+  return <PostContainer />;
 }
