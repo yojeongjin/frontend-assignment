@@ -51,6 +51,23 @@ export const getPosts = async (
 };
 
 /**
+ * 게시물 단건 조회
+ *
+ * @param {PostResType[]} posts - 전체 게시물 배열
+ * @param {number} id - 게시물 고유 ID (params에서 넘어옴)
+ * @returns {Promise<PostResType>} 게시물 객체
+ */
+export const getPostId = async (posts: PostResType[], id: number): Promise<PostResType> => {
+  await delay(1000);
+
+  const post = posts.find((p) => p.id === id);
+  if (!post) {
+    throw new Error(`Post with id ${id} not found`);
+  }
+  return post;
+};
+
+/**
  * 게시글 좋아요
  *
  * @param posts 전체 게시물 배열

@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useRouter } from 'next/router';
 // service
 import { getPosts, toggleLike, toggleRetweet } from '@/services/post.service';
 // hooks
@@ -19,6 +20,7 @@ import PostSkeleton from '@/components/Post/Load/PostSkeleton';
 import PostLoad from '@/components/Post/Load/PostLoad';
 
 export default function PostContainer() {
+  const router = useRouter();
   /* ===== constants ===== */
   const PAGE_SIZE = 10;
   /* ===== external states ===== */
@@ -147,7 +149,11 @@ export default function PostContainer() {
       ) : (
         <>
           {posts.map((post) => (
-            <PostArticle key={post.id} aria-label={`${post.id}의 게시물`}>
+            <PostArticle
+              key={post.id}
+              aria-label={`${post.id}의 게시물`}
+              onClick={() => router.push(`/post/${post.id}`)}
+            >
               <PostHeader
                 author={post.author}
                 categoryName={post.categoryName}

@@ -2,8 +2,16 @@ import styled from 'styled-components';
 // type
 import { LayoutProps } from '@/type/common';
 
-export default function PostArticle({ children }: LayoutProps) {
-  return <Article role="article">{children}</Article>;
+interface PostArticle extends LayoutProps {
+  onClick: () => void;
+}
+
+export default function PostArticle({ children, onClick }: PostArticle) {
+  return (
+    <Article role="article" onClick={onClick}>
+      {children}
+    </Article>
+  );
 }
 
 /* ===== styles ===== */

@@ -1,17 +1,11 @@
-import Link from 'next/link';
-import { useRouter } from 'next/router';
 import styled from 'styled-components';
 // type
 import { LayoutProps } from '@/type/common';
 // components
 import Header from './Header';
 import Sidebar from './Sidebar';
-// icon
-import { IoAdd } from 'react-icons/io5';
 
 export default function Layout({ children }: LayoutProps) {
-  const router = useRouter();
-  console.log(router);
   return (
     <LayoutBase>
       {/* 모바일 전용 header */}
@@ -30,13 +24,6 @@ export default function Layout({ children }: LayoutProps) {
           {children}
         </Main>
       </Content>
-
-      {/* 모바일 전용 글쓰기 버튼 */}
-      {router.pathname !== '/create' && (
-        <FloatingButton href="/create">
-          <IoAdd />
-        </FloatingButton>
-      )}
     </LayoutBase>
   );
 }
@@ -102,30 +89,5 @@ const Main = styled.main`
 
   @media (max-width: 999px) {
     border: none;
-  }
-`;
-
-const FloatingButton = styled(Link)`
-  position: fixed;
-  bottom: 42px;
-  right: 24px;
-  background: ${({ theme }) => theme.primary_01};
-  width: 56px;
-  height: 56px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  color: #fff;
-  font-size: 28px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-  z-index: 120;
-
-  @media (min-width: 1000px) {
-    display: none;
-  }
-
-  &:hover {
-    opacity: 0.92;
   }
 `;

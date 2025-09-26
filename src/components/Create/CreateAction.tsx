@@ -61,9 +61,4 @@ const SubmitBtn = styled(ButtonBase)`
   color: #fff;
   border-color: #111;
   font-weight: 700;
-
-  &:disabled {
-    opacity: 0.45;
-    cursor: not-allowed;
-  }
 `;
