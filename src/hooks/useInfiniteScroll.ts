@@ -46,8 +46,8 @@ export default function useInfiniteScroll({
     if (!observerEl.current) return;
 
     const observer = new IntersectionObserver(handleObserver, {
-      threshold: 0,
-      rootMargin: '100px',
+      threshold: 0.5,
+      rootMargin: '200px',
     });
     observer.observe(observerEl.current);
 

@@ -29,7 +29,7 @@ export const getPosts = async (
   posts: PostResType[],
   query: GetPostsQuery = {}
 ): Promise<GetPostsResult> => {
-  const { page = 1, limit = 10, categoryId, sort = 'newest' } = query;
+  const { page = 1, limit = 10, categoryId, sort } = query;
 
   await delay(1000);
 

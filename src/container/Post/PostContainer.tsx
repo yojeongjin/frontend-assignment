@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useRouter } from 'next/router';
 // service
 import { getPosts, toggleLike, toggleRetweet } from '@/services/post.service';
@@ -18,9 +18,13 @@ import PostImg from '@/components/Post/PostImg';
 import PostAction from '@/components/Post/PostAction';
 import PostSkeleton from '@/components/Post/Load/PostSkeleton';
 import PostLoad from '@/components/Post/Load/PostLoad';
+import PostScroll from '@/components/Post/PostScroll';
+import PullToRefresh from '@/components/Common/PullToRefresh';
 
 export default function PostContainer() {
   const router = useRouter();
+  const postRef = useRef<HTMLDivElement | null>(null);
+
   /* ===== constants ===== */
   const PAGE_SIZE = 10;
   /* ===== external states ===== */
@@ -44,9 +48,12 @@ export default function PostContainer() {
    * @description
    * - 1페이지 로드 → posts 세팅
    */
-  const loadFirstPage = useCallback(async () => {
+  const loadPostFn = useCallback(async () => {
     setIsLoading(true);
+    setHasNextPage(true);
+    setPosts([]);
     scrollToTop();
+
     try {
       const res = await getPosts(prototypes, {
         page: 1,
@@ -67,8 +74,8 @@ export default function PostContainer() {
   }, [prototypes, selectedCategoryId, sortKey]);
 
   useEffect(() => {
-    loadFirstPage();
-  }, [loadFirstPage]);
+    loadPostFn();
+  }, [loadPostFn]);
 
   /**
    * 게시물 더 가져오기
@@ -78,22 +85,28 @@ export default function PostContainer() {
    * - 마지막 페이지면 hasNextPage false로 업데이트
    */
   const loadMoreFn = useCallback(async () => {
-    const nextPage = page + 1;
+    if (!hasNextPage || isLoading) return;
 
-    const updated = await getPosts(prototypes, {
-      page: nextPage,
-      limit: PAGE_SIZE,
-      categoryId: selectedCategoryId,
-      sort: sortKey,
-    });
+    try {
+      const nextPage = page + 1;
 
-    setPosts((prev) => prev.concat(updated.items));
-    setTotal(updated.total);
-    setPage(nextPage);
+      const updated = await getPosts(prototypes, {
+        page: nextPage,
+        limit: PAGE_SIZE,
+        categoryId: selectedCategoryId,
+        sort: sortKey,
+      });
 
-    // 마지막 페이지 판단
-    if (updated.items.length < PAGE_SIZE || nextPage * PAGE_SIZE >= updated.total) {
-      setHasNextPage(false);
+      setPosts((prev) => prev.concat(updated.items));
+      setTotal(updated.total);
+      setPage(nextPage);
+
+      // 마지막 페이지 판단
+      if (updated.items.length < PAGE_SIZE || nextPage * PAGE_SIZE >= updated.total) {
+        setHasNextPage(false);
+      }
+    } catch (e) {
+      console.error(e);
     }
   }, [page, hasNextPage, prototypes, selectedCategoryId, sortKey]);
 
@@ -140,36 +153,50 @@ export default function PostContainer() {
         setSortKey={setSortKey}
         total={total}
       />
-      {/* 로딩 스켈레톤 */}
-      {isLoading ? (
-        <>
-          <PostSkeleton imageCount={0} />
-          <PostSkeleton imageCount={2} />
-        </>
-      ) : (
-        <>
-          {posts.map((post) => (
-            <PostArticle
-              key={post.id}
-              aria-label={`${post.id}의 게시물`}
-              onClick={() => router.push(`/post/${post.id}`)}
-            >
-              <PostHeader
-                author={post.author}
-                categoryName={post.categoryName}
-                createdAt={post.createdAt}
-              />
-              <PostContent content={post.content} />
-              <PostImg images={post.images} />
-              <PostAction post={post} handleLike={handleLike} handleRetweet={handleRetweet} />
-            </PostArticle>
-          ))}
-        </>
-      )}
-      {/* 인터섹션 옵저버 타겟 */}
-      <div ref={observerEl} />
-      {/* 더 이상 데이터 없음 표시 */}
-      {!hasNextPage && posts.length > 0 && <PostLoad>더 이상 데이터가 없습니다.</PostLoad>}
+
+      {
+        <PostScroll ref={postRef}>
+          <PullToRefresh elRef={postRef} loadPostFn={loadPostFn}>
+            {isLoading && posts.length === 0 ? (
+              <>
+                <PostSkeleton imageCount={0} />
+                <PostSkeleton imageCount={2} />
+              </>
+            ) : (
+              <>
+                {posts.map((post) => (
+                  <PostArticle
+                    key={`post-${post.id}`}
+                    aria-label={`${post.id}의 게시물`}
+                    onClick={() => router.push(`/post/${post.id}`)}
+                  >
+                    <PostHeader
+                      author={post.author}
+                      categoryName={post.categoryName}
+                      createdAt={post.createdAt}
+                    />
+                    <PostContent content={post.content} />
+                    <PostImg images={post.images} />
+                    <PostAction post={post} handleLike={handleLike} handleRetweet={handleRetweet} />
+                  </PostArticle>
+                ))}
+
+                {isLoading && (
+                  <>
+                    <PostSkeleton imageCount={0} />
+                    <PostSkeleton imageCount={2} />
+                  </>
+                )}
+              </>
+            )}
+
+            {/* 인터섹션 옵저버 타겟 */}
+            <div ref={observerEl} style={{ height: 1 }} />
+            {/* 더 이상 데이터 없음 표시 */}
+            {!hasNextPage && posts.length > 0 && <PostLoad>더 이상 데이터가 없습니다.</PostLoad>}
+          </PullToRefresh>
+        </PostScroll>
+      }
     </section>
   );
 }

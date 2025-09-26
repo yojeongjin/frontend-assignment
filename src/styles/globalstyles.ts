@@ -19,8 +19,11 @@ const GlobalStyles = createGlobalStyle`
     line-height: 1.5;
     color: #0f1419;
     background-color: #fff;
+    overflow-anchor: none;
+    overscroll-behavior-y: none;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    -webkit-overflow-scrolling: touch;
   }
 
   a {

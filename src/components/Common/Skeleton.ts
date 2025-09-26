@@ -22,15 +22,15 @@ export const skeletonStyle = css`
   }
 `;
 
-export const SkeletonLine = styled.div<{ h?: number; w?: string }>`
+export const SkeletonLine = styled.div<{ $h?: number; $w?: string }>`
   ${skeletonStyle};
-  height: ${({ h }) => (h ? `${h}px` : '14px')};
-  width: ${({ w }) => w || '100%'};
+  height: ${({ $h }) => ($h ? `${$h}px` : '14px')};
+  width: ${({ $w }) => $w || '100%'};
 `;
 
-export const SkeletonCircle = styled.div<{ size?: number }>`
+export const SkeletonCircle = styled.div<{ $size?: number }>`
   ${skeletonStyle};
-  width: ${({ size }) => (size ? `${size}px` : '44px')};
-  height: ${({ size }) => (size ? `${size}px` : '44px')};
+  width: ${({ $size }) => ($size ? `${$size}px` : '44px')};
+  height: ${({ $size }) => ($size ? `${$size}px` : '44px')};
   border-radius: 50%;
 `;

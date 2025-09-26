@@ -17,20 +17,20 @@ export default function PostSkeleton({ imageCount = 0 }: Props) {
           <User>
             <SkeletonCircle />
             <UserInfo>
-              <SkeletonLine h={16} w="120px" />
-              <SkeletonLine h={12} w="80px" />
+              <SkeletonLine $h={16} $w="120px" />
+              <SkeletonLine $h={12} $w="80px" />
             </UserInfo>
           </User>
           <ContentInfo>
-            <SkeletonLine h={12} w="52px" />
-            <SkeletonLine h={12} w="68px" />
+            <SkeletonLine $h={12} $w="52px" />
+            <SkeletonLine $h={12} $w="68px" />
           </ContentInfo>
         </PostHeader>
 
         <Body>
-          <SkeletonLine h={14} w="90%" />
-          <SkeletonLine h={14} w="70%" />
-          <SkeletonLine h={14} w="55%" />
+          <SkeletonLine $h={14} $w="90%" />
+          <SkeletonLine $h={14} $w="70%" />
+          <SkeletonLine $h={14} $w="55%" />
         </Body>
 
         {count > 0 && (
@@ -42,9 +42,9 @@ export default function PostSkeleton({ imageCount = 0 }: Props) {
         )}
 
         <Actions>
-          <SkeletonLine h={16} w="60px" />
-          <SkeletonLine h={16} w="80px" />
-          <SkeletonLine h={16} w="80px" />
+          <SkeletonLine $h={16} $w="60px" />
+          <SkeletonLine $h={16} $w="80px" />
+          <SkeletonLine $h={16} $w="80px" />
         </Actions>
       </ArticleStatus>
     </PostArticle>
@@ -138,7 +138,6 @@ const ImgGrid = styled.div<{ $count: number }>`
   display: grid;
   gap: 6px;
   border-radius: 12px;
-  overflow: hidden;
   ${({ $count }) => layoutByCount[$count as 1 | 2 | 3 | 4]}
 `;
 

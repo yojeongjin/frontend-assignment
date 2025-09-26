@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { LayoutProps } from '@/type/common';
 
 interface PostArticle extends LayoutProps {
-  onClick: () => void;
+  onClick?: () => void;
 }
 
 export default function PostArticle({ children, onClick }: PostArticle) {
