@@ -1,8 +1,9 @@
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useEffect, useRef, useCallback, SetStateAction } from 'react';
 
 interface InfiniteScrollType {
   hasNextPage: boolean;
   loadMoreFn: () => Promise<void> | void;
+  setIsLoading: React.Dispatch<SetStateAction<boolean>>;
 }
 /**
  * useInfiniteScroll
@@ -15,17 +16,19 @@ interface InfiniteScrollType {
  *
  * @returns
  * - observerEl: 감시 대상이 될 ref
- * - isLoading: 로딩 여부
  */
 
-export default function useInfiniteScoll({ hasNextPage, loadMoreFn }: InfiniteScrollType) {
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+export default function useInfiniteScroll({
+  hasNextPage,
+  loadMoreFn,
+  setIsLoading,
+}: InfiniteScrollType) {
   const observerEl = useRef<HTMLDivElement>(null);
 
   const handleObserver = useCallback(
     async (entries: IntersectionObserverEntry[]) => {
       const [target] = entries;
-      if (!hasNextPage || isLoading) return;
+      if (!hasNextPage) return;
 
       if (target.isIntersecting) {
         setIsLoading(true);
@@ -36,7 +39,7 @@ export default function useInfiniteScoll({ hasNextPage, loadMoreFn }: InfiniteSc
         }
       }
     },
-    [hasNextPage, isLoading, loadMoreFn]
+    [hasNextPage, loadMoreFn]
   );
 
   useEffect(() => {
@@ -51,5 +54,5 @@ export default function useInfiniteScoll({ hasNextPage, loadMoreFn }: InfiniteSc
     return () => observer.disconnect();
   }, [handleObserver]);
 
-  return { observerEl, isLoading };
+  return { observerEl };
 }

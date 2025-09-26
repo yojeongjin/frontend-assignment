@@ -2,15 +2,11 @@ export interface PostProps {
   initialPosts: PostResType[];
   pageSize: number;
 }
+
 // 게시물
 export interface PostResType {
   id: number;
-  author: {
-    name: string;
-    nickname: string;
-    profileImage: string;
-    verified: boolean;
-  };
+  author: Author;
   content: string;
   images: string[];
   category: number;
@@ -25,14 +21,17 @@ export interface PostResType {
   commentList?: Comment[];
 }
 
+// 작성자
+export interface Author {
+  name: string;
+  nickname: string;
+  profileImage: string;
+  verified: boolean;
+}
+
 // 댓글
 export interface Comment {
-  author: {
-    name: string;
-    nickname: string;
-    profileImage: string;
-    verified: boolean;
-  };
+  author: Author;
   content: string;
   createdAt: string;
   likes: number;
@@ -40,7 +39,7 @@ export interface Comment {
 }
 
 export interface PostReqType {
-  userId: number;
+  author: Author;
   content: string;
   images: string[];
   category: number;

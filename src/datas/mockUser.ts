@@ -1,4 +1,4 @@
-export const currentUser = {
+export const user = {
   id: 'user1',
   name: '홍길동',
   nickname: 'myusername',

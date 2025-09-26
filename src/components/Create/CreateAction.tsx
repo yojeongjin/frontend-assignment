@@ -2,15 +2,16 @@ import styled from 'styled-components';
 
 interface CreateActionProps {
   onCancel: () => void;
+  onSubmit: () => void;
 }
 
-export default function CreateAction({ onCancel }: CreateActionProps) {
+export default function CreateAction({ onCancel, onSubmit }: CreateActionProps) {
   return (
     <ActionBar>
       <ActionAlert>* 이미지 최대 4장, 텍스트 280자</ActionAlert>
       <ButtonWrapper>
         <CancelBtn onClick={onCancel}>취소</CancelBtn>
-        <SubmitBtn>작성하기</SubmitBtn>
+        <SubmitBtn onClick={onSubmit}>작성하기</SubmitBtn>
       </ButtonWrapper>
     </ActionBar>
   );

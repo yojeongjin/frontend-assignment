@@ -6,6 +6,7 @@ import GlobalStyles from '@/styles/globalstyles';
 import theme from '@/styles/theme';
 // components - common
 import Layout from '@/components/Layout/Layout';
+import { AppStateProvider } from '@/AppStateContext';
 
 export default function App({ Component, pageProps }: AppProps) {
   const setScreenSize = () => {
@@ -25,11 +26,13 @@ export default function App({ Component, pageProps }: AppProps) {
   }, []);
 
   return (
-    <ThemeProvider theme={theme}>
-      <GlobalStyles />
-      <Layout>
-        <Component {...pageProps} />
-      </Layout>
-    </ThemeProvider>
+    <AppStateProvider>
+      <ThemeProvider theme={theme}>
+        <GlobalStyles />
+        <Layout>
+          <Component {...pageProps} />
+        </Layout>
+      </ThemeProvider>
+    </AppStateProvider>
   );
 }

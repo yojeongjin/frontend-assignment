@@ -1,23 +1,25 @@
 import styled from 'styled-components';
-// datas
-import { currentUser } from '@/datas/mockUser';
+// hooks
+import useUser from '@/hooks/useUser';
 // icons
 import { MdVerified } from 'react-icons/md';
 
 export default function UserInfo() {
+  const user = useUser();
+
   return (
     <UserWrapper>
-      <UserProfileImg src={currentUser.profileImage} alt="사용자 이미지" />
+      <UserProfileImg src={user.profileImage} alt="사용자 이미지" />
       <UserInfoWrapper>
         <UserName>
-          {currentUser.name}
-          {currentUser.verified && (
+          {user.name}
+          {user.verified && (
             <UserBadge aria-label="인증된 계정">
               <MdVerified />
             </UserBadge>
           )}
         </UserName>
-        <UserId aria-label="사용자 아이디">@{currentUser.nickname}</UserId>
+        <UserId aria-label="사용자 아이디">@{user.nickname}</UserId>
       </UserInfoWrapper>
     </UserWrapper>
   );
@@ -38,7 +40,11 @@ const UserProfileImg = styled.img`
   object-fit: cover;
 `;
 
-const UserInfoWrapper = styled.div``;
+const UserInfoWrapper = styled.div`
+  @media (max-width: 999px) {
+    display: none;
+  }
+`;
 
 const UserName = styled.h4`
   display: flex;
