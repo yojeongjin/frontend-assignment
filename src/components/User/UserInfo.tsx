@@ -9,7 +9,7 @@ export default function UserInfo() {
 
   return (
     <UserWrapper>
-      <UserProfileImg src={user.profileImage} alt="사용자 이미지" />
+      <UserProfileImg src={user.profileImage} alt="사용자 이미지" loading="lazy" />
       <UserInfoWrapper>
         <UserName>
           {user.name}

@@ -13,12 +13,12 @@ interface PostActionProps {
 export default function PostAction({ post, handleLike, handleRetweet }: PostActionProps) {
   return (
     <ActionBase>
-      <ActionBtn $variant="comment">
+      <CommentDiv>
         <Icon>
           <FaRegComment />
         </Icon>
         {post.comments === 0 ? null : post.comments}
-      </ActionBtn>
+      </CommentDiv>
       <ActionBtn
         $variant="retweet"
         $active={post.isRetweeted}
@@ -65,12 +65,11 @@ const ActionBase = styled.div`
   color: ${(props) => props.theme.gray_02};
 `;
 
-const ActionBtn = styled.button<{ $variant?: 'comment' | 'retweet' | 'like'; $active?: boolean }>`
+const ActionBtn = styled.button<{ $variant?: 'retweet' | 'like'; $active?: boolean }>`
   display: flex;
   align-items: center;
   gap: 4px;
   padding: 6px 8px;
-  border-radius: 8px;
   font-weight: 500;
   font-size: 14px;
   color: ${({ $variant, $active, theme }) =>
@@ -87,6 +86,14 @@ const ActionBtn = styled.button<{ $variant?: 'comment' | 'retweet' | 'like'; $ac
     color: ${({ $variant, theme }) =>
       $variant === 'retweet' ? theme.retweet : $variant === 'like' ? theme.like : 'gray_01'};
   }
+`;
+
+const CommentDiv = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-weight: 500;
+  font-size: 14px;
 `;
 
 const Icon = styled.span`

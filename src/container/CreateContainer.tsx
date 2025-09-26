@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useRouter } from 'next/router';
 // hooks
 import useUser from '@/hooks/useUser';
@@ -45,7 +45,6 @@ export default function CreateContainer() {
     () => files.map((file) => ({ name: file.name, url: URL.createObjectURL(file) })),
     [files]
   );
-
   /**
    * 파일 선택 핸들러
    *
@@ -53,27 +52,32 @@ export default function CreateContainer() {
    * - 이미지 파일만 허용
    * - 최대 4장 제한 (초과분 컷)
    */
-  const onFilesSelected = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (!e.target.files) return;
+  const onFilesSelected = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      if (!e.target.files) return;
 
-    const uploadFiles = Array.from(e.target.files).filter((file) => file.type.startsWith('image/'));
-    const upload = [...files, ...uploadFiles].slice(0, MAX_FILES);
+      const uploadFiles = Array.from(e.target.files).filter((file) =>
+        file.type.startsWith('image/')
+      );
+      const upload = [...files, ...uploadFiles].slice(0, MAX_FILES);
 
-    if ([...files, ...uploadFiles].length > MAX_FILES) {
-      alert(`이미지는 최대 ${MAX_FILES}장까지 업로드할 수 있어요.`);
-    }
+      if ([...files, ...uploadFiles].length > MAX_FILES) {
+        alert(`이미지는 최대 ${MAX_FILES}장까지 업로드할 수 있어요.`);
+      }
 
-    setFiles(upload);
-  };
+      setFiles(upload);
+    },
+    [files]
+  );
 
   /**
    * 미리보기 개별 이미지 제거
    *
    * @param id 제거할 미리보기 인덱스
    */
-  const removeAt = (id: number) => {
+  const removeAt = useCallback((id: number) => {
     setFiles((prev) => prev.filter((_, i) => i !== id));
-  };
+  }, []);
 
   /**
    * 작성 취소
@@ -82,7 +86,7 @@ export default function CreateContainer() {
    * - 작성 중(텍스트/이미지/카테고리 선택)일 경우 확인 모달
    * - 확인 시 이전 페이지로 이동
    */
-  const onCancel = () => {
+  const onCancel = useCallback(() => {
     const isCancel = Boolean(content.trim() || category.id);
     if (isCancel) {
       const ok = confirm('작성 중인 내용을 저장하지 않고 나가시겠습니까?');
@@ -90,7 +94,7 @@ export default function CreateContainer() {
       if (!ok) return;
     }
     router.back();
-  };
+  }, [content, category.id, files.length, router]);
 
   /**
    * 작성 제출
@@ -102,7 +106,7 @@ export default function CreateContainer() {
    * - prepend로 첫 페이지 상단 노출
    * - 완료 후 메인으로 이동
    */
-  const onSubmit = () => {
+  const onSubmit = useCallback(() => {
     if (!category.id) {
       alert('카테고리를 선택해주세요.');
       return;
@@ -112,9 +116,9 @@ export default function CreateContainer() {
       return;
     }
     // 최대 4장
-    const imageUrls = previews.slice(0, 4).map((preview) => preview.url); // 최대 4장
+    const imageUrls = previews.slice(0, MAX_FILES).map((preview) => preview.url); // 최대 4장
 
-    setPrototypes((prev) => {
+    setPrototypes((prev: PostResType[]) => {
       // 새로운 id: 기존 최대 id + 1
       const nextId = prev.length > 0 ? Math.max(...prev.map((p) => p.id ?? 0)) + 1 : 1;
 
@@ -141,11 +145,11 @@ export default function CreateContainer() {
 
     // 완료 후 페이지 이동
     router.push('/');
-  };
+  }, [category.id, category.name, content, files.length, previews, setPrototypes, user, router]);
 
   return (
     <CreateSection>
-      <CreateBoard content={content} setContent={setContent} />
+      <CreateBoard maxLen={MAX_LEN} content={content} setContent={setContent} />
       <CreateCategory category={category} setCategory={setCategory} />
       <CreateImg
         files={files}

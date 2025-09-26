@@ -1,10 +1,9 @@
 import Link from 'next/link';
 import { useEffect, useRef } from 'react';
-
 import { useRouter } from 'next/router';
 import styled from 'styled-components';
+// component
 import UserInfo from '../User/UserInfo';
-
 // icons
 import { TbBrandTwitterFilled } from 'react-icons/tb';
 import { MdClose } from 'react-icons/md';
@@ -37,17 +36,17 @@ export default function MobileSidebar({ open, onClose }: MobileSidebarProps) {
     return () => {
       document.removeEventListener('mousedown', handleOutside);
     };
-  });
+  }, []);
 
   return (
     <SidebarSection $open={open} aria-label="모바일 사이드바 오버레이">
       <SidebarInner aria-label="모바일 사이드바">
         <Sidebar $open={open} ref={outside}>
           <SidebarHeader>
-            <Logo>
+            <Logo aria-label="홈으로 이동">
               <TbBrandTwitterFilled />
             </Logo>
-            <CloseBtn onClick={onClose} role="button">
+            <CloseBtn type="button" onClick={onClose}>
               <MdClose />
             </CloseBtn>
           </SidebarHeader>
@@ -78,10 +77,12 @@ const SidebarSection = styled.div<{ $open: boolean }>`
   background-color: rgba(0, 0, 0, 0.7);
   position: fixed;
   inset: 0;
-  display: ${(props) => (props.$open ? 'fleax' : 'none')};
+  display: ${(props) => (props.$open ? 'flex' : 'none')};
   z-index: 999;
+
+  /* 데스크톱 */
   @media (min-width: 1000px) {
-    display: none; /* 데스크톱에선 숨김 */
+    display: none;
   }
 `;
 

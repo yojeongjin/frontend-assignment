@@ -45,9 +45,7 @@ export const getPosts = async (
   const end = start + limit;
   const items = sorted.slice(start, end);
 
-  const total = sorted.length;
-
-  return { items, total };
+  return { items, total: sorted.length };
 };
 
 /**
@@ -55,6 +53,7 @@ export const getPosts = async (
  *
  * @param {PostResType[]} posts - 전체 게시물 배열
  * @param {number} id - 게시물 고유 ID (params에서 넘어옴)
+ *
  * @returns {Promise<PostResType>} 게시물 객체
  */
 export const getPostId = async (posts: PostResType[], id: number): Promise<PostResType> => {

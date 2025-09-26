@@ -13,7 +13,7 @@ export default function PostHeader({ author, categoryName, createdAt }: PostHead
   return (
     <ContentHeader>
       <UserWrapper>
-        <UserProfile src={author.profileImage} alt="사용자 이미지" />
+        <UserProfile src={author.profileImage} alt="사용자 이미지" loading="lazy" />
         <UserInfo>
           <UserName>
             {author.name}

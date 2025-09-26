@@ -1,6 +1,6 @@
 // container
-import PostDetailConatiner from '@/container/Post/PostDetailConatiner';
+import PostDetailContainer from '@/container/Post/PostDetailContainer';
 
 export default function PostDetail() {
-  return <PostDetailConatiner />;
+  return <PostDetailContainer />;
 }

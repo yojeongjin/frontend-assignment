@@ -1,12 +1,12 @@
 import type { AppProps } from 'next/app';
 import { useEffect } from 'react';
+import { AppStateProvider } from '@/AppStateContext';
 // styles
 import { ThemeProvider } from 'styled-components';
 import GlobalStyles from '@/styles/globalstyles';
 import theme from '@/styles/theme';
 // components - common
 import Layout from '@/components/Layout/Layout';
-import { AppStateProvider } from '@/AppStateContext';
 
 export default function App({ Component, pageProps }: AppProps) {
   const setScreenSize = () => {
@@ -15,6 +15,7 @@ export default function App({ Component, pageProps }: AppProps) {
   };
 
   useEffect(() => {
+    if (typeof window === 'undefined') return;
     // 초기 실행 시 화면 높이 계산
     setScreenSize();
 

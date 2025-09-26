@@ -13,12 +13,12 @@ export default function Header({ onMenuClick }: HeaderProps) {
     <HeaderBase>
       <Nav role="banner" aria-label="상단 내비게이션">
         {/* logo */}
-        <Logo href="/">
+        <Logo href="/" aria-label="홈으로 이동">
           <TbBrandTwitterFilled />
         </Logo>
       </Nav>
 
-      <HeaderMenu onClick={onMenuClick}>
+      <HeaderMenu type="button" aria-label="사이드바 열기" onClick={onMenuClick}>
         <HiOutlineMenuAlt3 />
       </HeaderMenu>
     </HeaderBase>
@@ -34,10 +34,10 @@ const HeaderBase = styled.div`
   align-items: center;
   justify-content: space-between;
   margin: 0 auto;
-  padding: 0 16px;
 `;
 
 const Nav = styled.nav`
+  height: 100%;
   // border-bottom: 1px solid ${(props) => props.theme.gray_03};
 `;
 
@@ -46,11 +46,15 @@ const Logo = styled(Link)`
   display: flex;
   align-items: center;
   padding: 0 16px;
-  font-size: 30px;
+  font-size: 28px;
   color: ${(props) => props.theme.primary_01};
 `;
 
-const HeaderMenu = styled.div`
+const HeaderMenu = styled.button`
+  height: 100%;
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
   font-size: 24px;
   cursor: pointer;
 `;

@@ -1,6 +1,7 @@
-import styled from 'styled-components';
-import { LayoutProps } from '@/type/common';
 import { forwardRef } from 'react';
+import styled from 'styled-components';
+// type
+import { LayoutProps } from '@/type/common';
 
 const PostScroll = forwardRef<HTMLDivElement, LayoutProps>(({ children }, ref) => {
   return <ScrollBase ref={ref}>{children}</ScrollBase>;
@@ -10,9 +11,9 @@ export default PostScroll;
 
 /* ===== styles ===== */
 const ScrollBase = styled.div`
-  max-height: calc(var(--vh, 1vh) * 100 - 112px);
-  border: 1px solid black;
-  overflow: auto;
-  overscroll-behavior: contain;
-  will-change: transform;
+  @media (max-width: 999px) {
+    height: calc(var(--vh, 1vh) * 100 - 145px);
+    overflow: auto;
+    overscroll-behavior: contain;
+  }
 `;

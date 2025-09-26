@@ -4,13 +4,13 @@ import styled from 'styled-components';
 import { PostReqType } from '@/type/post';
 
 type CreateBoardProps = {
+  maxLen: number;
   content: PostReqType['content'];
   setContent: Dispatch<SetStateAction<string>>;
 };
 
-export default function CreateBoard({ content, setContent }: CreateBoardProps) {
-  const MAX_LEN = 280;
-  const remaining = MAX_LEN - content.length;
+export default function CreateBoard({ maxLen, content, setContent }: CreateBoardProps) {
+  const remaining = maxLen - content.length;
   const isOverLimit = remaining < 0;
 
   return (
@@ -22,11 +22,11 @@ export default function CreateBoard({ content, setContent }: CreateBoardProps) {
           placeholder="무슨 일이 일어나고 있나요?"
           value={content}
           onChange={(e) => setContent(e.target.value)}
-          maxLength={280}
+          maxLength={maxLen}
           aria-describedby="content-counter"
         />
         <Counter id="content-counter" $warn={isOverLimit}>
-          {isOverLimit ? 0 : remaining} / {MAX_LEN}
+          {isOverLimit ? 0 : remaining} / {maxLen}
         </Counter>
       </BoardWrapper>
     </BoardBase>

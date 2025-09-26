@@ -36,7 +36,7 @@ export default function PostCategory({
     return () => {
       document.removeEventListener('mousedown', handleOutside);
     };
-  });
+  }, [handleOutside]);
 
   return (
     <CategoryBase>
@@ -92,12 +92,12 @@ export default function PostCategory({
       </SortWrapper>
 
       <CategoryMenu role="tablist" aria-label="피드 카테고리">
-        {categories.map((category, idx) => (
+        {categories.map((category) => (
           <CategoryItem
             key={category.id}
             role="tab"
-            $active={selectedCategoryId === idx}
-            onClick={() => setSelectedCategoryId(idx)}
+            $active={selectedCategoryId === category.id}
+            onClick={() => setSelectedCategoryId(Number(category.id))}
           >
             {category.name}
           </CategoryItem>

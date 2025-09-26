@@ -31,6 +31,13 @@ class MyDocument extends Document {
       <Html lang="ko">
         <Head>
           <meta charSet="utf-8" />
+          {/* iOS 지원용 */}
+          <meta name="apple-mobile-web-app-capable" content="yes" />
+          <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+          <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"
+          />
           <link rel="icon" href="/favicon.ico" />
         </Head>
         <body>

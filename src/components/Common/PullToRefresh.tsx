@@ -1,5 +1,6 @@
 import { LayoutProps } from '@/type/common';
 import { useState, useEffect } from 'react';
+// components
 import PostLoad from '../Post/Load/PostLoad';
 // spinner
 import BeatLoader from 'react-spinners/BeatLoader';
@@ -31,6 +32,7 @@ export default function PullToRefresh({ children, elRef, loadPostFn }: PtRProps)
         e.preventDefault();
 
         if (pullDistance > 80) {
+          // 이 거리 이상 당길 때 새로고침
           elRef.current!.style.transform = 'translate(0, 40px)';
           elRef.current!.style.transition = '0.3s';
           setRefreshing(true);
@@ -50,9 +52,9 @@ export default function PullToRefresh({ children, elRef, loadPostFn }: PtRProps)
       }
     }
 
-    document.addEventListener('touchstart', handleTouchStart);
-    document.addEventListener('touchmove', handleTouchMove);
-    document.addEventListener('touchend', handleTouchEnd);
+    document.addEventListener('touchstart', handleTouchStart, { passive: true });
+    document.addEventListener('touchmove', handleTouchMove, { passive: false });
+    document.addEventListener('touchend', handleTouchEnd, { passive: true });
 
     return () => {
       document.removeEventListener('touchstart', handleTouchStart);

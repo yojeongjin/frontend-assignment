@@ -1,10 +1,15 @@
 import styled from 'styled-components';
 
-export default function CommentAction() {
+interface CommentActionProps {
+  commentRef: React.RefObject<HTMLInputElement | null>;
+  addComment: () => void;
+}
+
+export default function CommentAction({ commentRef, addComment }: CommentActionProps) {
   return (
     <CommentBar>
-      <CommentInput placeholder="댓글달기" />
-      <SubmitBtn>입력</SubmitBtn>
+      <CommentInput ref={commentRef} placeholder="댓글달기" />
+      <SubmitBtn onClick={addComment}>입력</SubmitBtn>
     </CommentBar>
   );
 }

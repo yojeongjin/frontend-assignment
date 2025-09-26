@@ -15,7 +15,7 @@ export default function PostComment({ commentList }: PostCommentProps) {
         <CommentMenu>
           {commentList?.map((comment, id) => (
             <CommentItem key={id}>
-              <UserProfile src={comment.author.profileImage} alt="사용자 이미지" />
+              <UserProfile src={comment.author.profileImage} alt="사용자 이미지" loading="lazy" />
               <CommentBody>
                 <CommentHeader>
                   <UserInfo>
