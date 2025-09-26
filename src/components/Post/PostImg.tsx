@@ -30,7 +30,8 @@ export default function PostImg({ images }: PostImgProps) {
             src={src}
             alt={`게시물 이미지 ${i + 1}`}
             loading="lazy"
-            onClick={() => {
+            onClick={(e) => {
+              e.stopPropagation();
               setClickedIndex(i);
               setOpenImg(true);
             }}
@@ -145,10 +146,10 @@ const ImgWrapper = styled.div<{ $count: number }>`
   display: grid;
   gap: 6px;
   border-radius: 8px;
+  cursor: pointer;
   overflow: hidden;
   ${({ $count }) => layoutByCount[$count as 1 | 2 | 3 | 4]}
   @media (min-width: 1200px) {
-    // width: 95%;
   }
 `;
 

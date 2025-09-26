@@ -16,23 +16,22 @@ export default function Modal({ children, onCloseModal }: ModalProps) {
     };
   }, []);
 
-  // 모달 밖 클릭시 모달 off
-  const outside = useRef<HTMLDivElement | null>(null);
-  const handleOutside = (e: MouseEvent) => {
-    if (!outside.current?.contains(e.target as Node)) {
-      onCloseModal();
-    }
-  };
-  useEffect(() => {
-    document.addEventListener('mousedown', handleOutside);
-    return () => {
-      document.removeEventListener('mousedown', handleOutside);
-    };
-  });
-
   return (
-    <ModalBase>
-      <ModalInner ref={outside}>{children}</ModalInner>
+    <ModalBase
+      onClick={(e) => {
+        e.stopPropagation();
+        onCloseModal();
+      }}
+      onMouseDown={(e) => e.stopPropagation()}
+      onTouchStart={(e) => e.stopPropagation()}
+    >
+      <ModalInner
+        onClick={(e) => e.stopPropagation()}
+        onMouseDown={(e) => e.stopPropagation()}
+        onTouchStart={(e) => e.stopPropagation()}
+      >
+        {children}
+      </ModalInner>
     </ModalBase>
   );
 }

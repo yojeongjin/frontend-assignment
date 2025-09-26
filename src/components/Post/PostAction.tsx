@@ -22,7 +22,8 @@ export default function PostAction({ post, handleLike, handleRetweet }: PostActi
       <ActionBtn
         $variant="retweet"
         $active={post.isRetweeted}
-        onClick={() => {
+        onClick={(e) => {
+          e.stopPropagation();
           handleRetweet(post.id);
         }}
       >
@@ -34,7 +35,8 @@ export default function PostAction({ post, handleLike, handleRetweet }: PostActi
       <ActionBtn
         $variant="like"
         $active={post.isLiked}
-        onClick={() => {
+        onClick={(e) => {
+          e.stopPropagation();
           handleLike(post.id);
         }}
       >

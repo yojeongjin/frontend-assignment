@@ -41,7 +41,7 @@ const Logo = styled.div`
   display: flex;
   align-items: center;
   margin-bottom: 32px;
-  font-size: 28px;
+  font-size: 26px;
   color: ${(props) => props.theme.primary_01};
 `;
 const SidebarMenu = styled.nav`

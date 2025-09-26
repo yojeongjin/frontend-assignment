@@ -1,16 +1,23 @@
+import { useCallback, useState } from 'react';
 import styled from 'styled-components';
 // type
 import { LayoutProps } from '@/type/common';
 // components
 import Header from './Header';
 import Sidebar from './Sidebar';
+import MobileSidebar from './MobileSidebar';
 
 export default function Layout({ children }: LayoutProps) {
+  const [mobileOpen, setMobileOpen] = useState(false);
+
+  const openMobile = useCallback(() => setMobileOpen(true), []);
+  const closeMobile = useCallback(() => setMobileOpen(false), []);
+
   return (
     <LayoutBase>
       {/* 모바일 전용 header */}
       <HeaderBase>
-        <Header />
+        <Header onMenuClick={openMobile} />
       </HeaderBase>
 
       <Content>
@@ -24,6 +31,9 @@ export default function Layout({ children }: LayoutProps) {
           {children}
         </Main>
       </Content>
+
+      {/* 모바일 전용 사이드바 오버레이 */}
+      {mobileOpen && <MobileSidebar open={mobileOpen} onClose={closeMobile} />}
     </LayoutBase>
   );
 }
