@@ -50,7 +50,7 @@ export default function PostContainer() {
 
   // 스크롤 컨테이너 최상단으로
   const scrollToTop = useCallback(() => {
-    postRef.current?.scrollTo({ top: 0, behavior: 'auto' });
+    window.scrollTo({ top: 0 });
   }, []);
 
   /**

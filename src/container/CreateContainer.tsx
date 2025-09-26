@@ -157,6 +157,7 @@ export default function CreateContainer() {
         previews={previews}
         onFilesSelected={onFilesSelected}
         removeAt={removeAt}
+        maxFiles={MAX_FILES}
       />
       <CreateAction onCancel={onCancel} onSubmit={onSubmit} />
     </CreateSection>

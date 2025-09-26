@@ -11,6 +11,7 @@ interface UploaderProps {
   previews: Preview[];
   onFilesSelected: (e: React.ChangeEvent<HTMLInputElement>) => void;
   removeAt: (id: number) => void;
+  maxFiles: number;
 }
 
 export default function CreateImg({
@@ -19,16 +20,20 @@ export default function CreateImg({
   previews,
   onFilesSelected,
   removeAt,
+  maxFiles,
 }: UploaderProps) {
+  const canAdd = files.length < maxFiles;
+  const remaining = maxFiles - files.length;
+
   return (
     <ImgBase>
-      <Label as="div">이미지(최대 4장)</Label>
+      <Label as="div">이미지(최대 {maxFiles}장)</Label>
       {files.length === 0 ? (
         <ImageBase>
           <ImgLabel htmlFor="img_file">
             <ImgIcon />
             <ImgAlert>사진을 업로드해주세요.</ImgAlert>
-            <Small>(JPG/PNG/GIF, 최대 4장)</Small>
+            <Small>(JPG/PNG/GIF, 최대 {maxFiles}장)</Small>
           </ImgLabel>
           <ImgFile
             id="img_file"
@@ -49,6 +54,27 @@ export default function CreateImg({
               </RemoveBtn>
             </PreviewItem>
           ))}
+          {/* 남은 자리가 있으면 업로드 타일 추가 */}
+          {canAdd && (
+            <AddTile>
+              <ImgLabel htmlFor="img_file">
+                <ImgIcon />
+              </ImgLabel>
+              <ImgFile
+                id="img_file"
+                type="file"
+                accept="image/*"
+                multiple
+                ref={fileInputRef}
+                onChange={(e) => {
+                  onFilesSelected(e);
+                  // 같은 파일 재선택 이슈(iOS 포함) 방지: 선택 후 value 초기화
+                  e.currentTarget.value = '';
+                }}
+                aria-label={`이미지 추가 업로더 (남은 ${remaining}장)`}
+              />
+            </AddTile>
+          )}
         </PreviewGrid>
       )}
     </ImgBase>
@@ -148,4 +174,13 @@ const RemoveBtn = styled.button`
   &:hover {
     background: rgba(0, 0, 0, 0.7);
   }
+`;
+
+const AddTile = styled.div`
+  position: relative;
+  border-radius: 12px;
+  aspect-ratio: 1 / 1;
+  border: 1.5px dashed #e6e6e6;
+  color: #888;
+  overflow: hidden;
 `;

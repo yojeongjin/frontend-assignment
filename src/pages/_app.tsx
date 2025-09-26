@@ -1,4 +1,5 @@
 import type { AppProps } from 'next/app';
+import Head from 'next/head';
 import { useEffect } from 'react';
 import { AppStateProvider } from '@/AppStateContext';
 // styles
@@ -30,6 +31,9 @@ export default function App({ Component, pageProps }: AppProps) {
     <AppStateProvider>
       <ThemeProvider theme={theme}>
         <GlobalStyles />
+        <Head>
+          <title>소셜 미디어 피드</title>
+        </Head>
         <Layout>
           <Component {...pageProps} />
         </Layout>

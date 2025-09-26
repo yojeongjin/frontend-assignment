@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction } from 'react';
+import { Dispatch, SetStateAction, useMemo } from 'react';
 import styled from 'styled-components';
 // type
 import { PostReqType } from '@/type/post';
@@ -10,8 +10,14 @@ type CreateBoardProps = {
 };
 
 export default function CreateBoard({ maxLen, content, setContent }: CreateBoardProps) {
-  const remaining = maxLen - content.length;
-  const isOverLimit = remaining < 0;
+  const { remaining, isOverLimit } = useMemo(() => {
+    const length = content?.length ?? 0;
+    const remain = maxLen - length;
+    return {
+      remaining: remain,
+      isOverLimit: remain < 0,
+    };
+  }, [content, maxLen]);
 
   return (
     <BoardBase>
@@ -22,8 +28,9 @@ export default function CreateBoard({ maxLen, content, setContent }: CreateBoard
           placeholder="무슨 일이 일어나고 있나요?"
           value={content}
           onChange={(e) => setContent(e.target.value)}
-          maxLength={maxLen}
+          maxLength={maxLen + 1}
           aria-describedby="content-counter"
+          $warn={isOverLimit}
         />
         <Counter id="content-counter" $warn={isOverLimit}>
           {isOverLimit ? 0 : remaining} / {maxLen}
@@ -51,7 +58,7 @@ const BoardWrapper = styled.div`
   gap: 6px;
 `;
 
-const ContentBoard = styled.textarea`
+const ContentBoard = styled.textarea<{ $warn?: boolean }>`
   width: 100%;
   min-height: 140px;
   padding: 12px 14px;
@@ -60,7 +67,7 @@ const ContentBoard = styled.textarea`
   font-size: 15px;
   resize: none;
   &:focus {
-    border-color: #8cbcff;
+    border-color: ${(props) => (props.$warn ? '#e0245e' : '#8cbcff')};
   }
 `;
 
