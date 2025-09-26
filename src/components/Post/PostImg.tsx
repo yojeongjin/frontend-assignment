@@ -177,7 +177,6 @@ const StyledSwiper = styled(Swiper)`
   }
   .swiper-button-prev,
   .swiper-button-next {
-    // background: #fff !important;
     color: #fff !important;
   }
 `;

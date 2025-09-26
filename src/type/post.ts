@@ -46,3 +46,15 @@ export interface PostReqType {
   categoryName: string;
   createdAt: string;
 }
+
+export interface GetPostsQuery {
+  page?: number;
+  limit?: number;
+  categoryId?: number;
+  sort?: 'newest' | 'oldest';
+}
+
+export interface GetPostsResult {
+  items: PostResType[];
+  total: number;
+}

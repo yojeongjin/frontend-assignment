@@ -10,11 +10,11 @@ export default function Sidebar() {
 
   return (
     <SidebarBase>
+      {/* logo */}
+      <Logo>
+        <TbBrandTwitterFilled />
+      </Logo>
       <SidebarMenu aria-label="사이드바 내비게이션">
-        {/* logo */}
-        <Logo href="/">
-          <TbBrandTwitterFilled />
-        </Logo>
         {/* nav */}
         <SidebarItem href="/" $islink={router.pathname === '/'}>
           홈
@@ -36,17 +36,17 @@ const SidebarBase = styled.div`
   height: 100%;
   padding: 0 16px;
 `;
+
+const Logo = styled.div`
+  display: flex;
+  align-items: center;
+  margin-bottom: 32px;
+  font-size: 28px;
+  color: ${(props) => props.theme.primary_01};
+`;
 const SidebarMenu = styled.nav`
   display: grid;
   gap: 6px;
-`;
-
-const Logo = styled(Link)`
-  display: flex;
-  align-items: center;
-  margin-bottom: 24px;
-  font-size: 30px;
-  color: ${(props) => props.theme.primary_01};
 `;
 
 const SidebarItem = styled(Link)<{ $islink: boolean }>`
@@ -61,5 +61,9 @@ const SidebarItem = styled(Link)<{ $islink: boolean }>`
 
 const SideFooter = styled.footer`
   position: absolute;
-  bottom: 32px;
+  bottom: 8px;
+  left: 0;
+  width: 100%;
+  padding: 16px;
+  border-top: 1px solid ${({ theme }) => theme.gray_03};
 `;

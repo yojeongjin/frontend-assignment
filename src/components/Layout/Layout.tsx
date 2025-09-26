@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import styled from 'styled-components';
 // type
 import { LayoutProps } from '@/type/common';
@@ -9,6 +10,8 @@ import Sidebar from './Sidebar';
 import { IoAdd } from 'react-icons/io5';
 
 export default function Layout({ children }: LayoutProps) {
+  const router = useRouter();
+  console.log(router);
   return (
     <LayoutBase>
       {/* 모바일 전용 header */}
@@ -29,9 +32,11 @@ export default function Layout({ children }: LayoutProps) {
       </Content>
 
       {/* 모바일 전용 글쓰기 버튼 */}
-      <FloatingButton href="/create">
-        <IoAdd />
-      </FloatingButton>
+      {router.pathname !== '/create' && (
+        <FloatingButton href="/create">
+          <IoAdd />
+        </FloatingButton>
+      )}
     </LayoutBase>
   );
 }
@@ -86,11 +91,13 @@ const SidebarBase = styled.aside`
     top: 0;
     height: calc(var(--vh, 1vh) * 100);
     padding-top: ${GUTTER}px;
+    border-left: 1px solid ${({ theme }) => theme.gray_03};
   }
 `;
 
 const Main = styled.main`
   min-height: calc(var(--vh, 1vh) * 100);
+  border-right: 1px solid ${({ theme }) => theme.gray_03};
   border-left: 1px solid ${({ theme }) => theme.gray_03};
 
   @media (max-width: 999px) {

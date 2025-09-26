@@ -41,9 +41,9 @@ const UserProfileImg = styled.img`
 `;
 
 const UserInfoWrapper = styled.div`
-  @media (max-width: 999px) {
-    display: none;
-  }
+  // @media (max-width: 999px) {
+  //   display: none;
+  // }
 `;
 
 const UserName = styled.h4`

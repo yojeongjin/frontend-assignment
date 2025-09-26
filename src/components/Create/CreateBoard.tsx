@@ -57,6 +57,7 @@ const ContentBoard = styled.textarea`
   padding: 12px 14px;
   border: 1px solid #e6e6e6;
   border-radius: 12px;
+  font-size: 15px;
   resize: none;
   &:focus {
     border-color: #8cbcff;

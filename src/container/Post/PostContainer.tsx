@@ -1,9 +1,11 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 // service
 import { getPosts, toggleLike, toggleRetweet } from '@/services/post.service';
 // hooks
 import usePrototypes from '@/hooks/usePrototypes';
 import useInfiniteScroll from '@/hooks/useInfiniteScroll';
+// data
+import { mockCategories } from '@/datas/mockCategories';
 // type
 import { PostResType } from '@/type/post';
 // components
@@ -23,9 +25,16 @@ export default function PostContainer() {
   const { prototypes } = usePrototypes();
   /* ===== local states ===== */
   const [posts, setPosts] = useState<PostResType[]>([]);
-  const [page, setPage] = useState(1);
-  const [isLoading, setIsLoading] = useState(false);
-  const [hasNextPage, setHasNextPage] = useState(true);
+  const [page, setPage] = useState<number>(1);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [hasNextPage, setHasNextPage] = useState<boolean>(true);
+  const [total, setTotal] = useState<number | null>(null);
+
+  const [selectedCategoryId, setSelectedCategoryId] = useState<number>(0);
+  const [sortKey, setSortKey] = useState<'newest' | 'oldest'>('newest');
+
+  /* ===== derived ===== */
+  const categories = useMemo(() => [{ id: 0, name: '전체' }, ...mockCategories], []);
 
   /**
    * 초기 데이터 로드
@@ -33,23 +42,31 @@ export default function PostContainer() {
    * @description
    * - 1페이지 로드 → posts 세팅
    */
-  useEffect(() => {
-    (async () => {
-      try {
-        setIsLoading(true);
-        const initialPosts = await getPosts(prototypes);
-
-        setPosts(initialPosts);
-        setPage(1);
-      } catch (e) {
-        if ((e as any)?.name !== 'AbortError') {
-          console.error(e);
-        }
-      } finally {
-        setIsLoading(false);
+  const loadFirstPage = useCallback(async () => {
+    setIsLoading(true);
+    scrollToTop();
+    try {
+      const res = await getPosts(prototypes, {
+        page: 1,
+        limit: PAGE_SIZE,
+        categoryId: selectedCategoryId,
+        sort: sortKey,
+      });
+      setPosts(res.items);
+      setTotal(res.total);
+      setPage(1);
+    } catch (e) {
+      if ((e as any)?.name !== 'AbortError') {
+        console.error(e);
       }
-    })();
-  }, [prototypes]);
+    } finally {
+      setIsLoading(false);
+    }
+  }, [prototypes, selectedCategoryId, sortKey]);
+
+  useEffect(() => {
+    loadFirstPage();
+  }, [loadFirstPage]);
 
   /**
    * 게시물 더 가져오기
@@ -60,16 +77,23 @@ export default function PostContainer() {
    */
   const loadMoreFn = useCallback(async () => {
     const nextPage = page + 1;
-    const updated = await getPosts(prototypes, nextPage, PAGE_SIZE);
 
-    setPosts((prev) => prev.concat(updated));
+    const updated = await getPosts(prototypes, {
+      page: nextPage,
+      limit: PAGE_SIZE,
+      categoryId: selectedCategoryId,
+      sort: sortKey,
+    });
+
+    setPosts((prev) => prev.concat(updated.items));
+    setTotal(updated.total);
     setPage(nextPage);
 
     // 마지막 페이지 판단
-    if (updated.length < PAGE_SIZE) {
+    if (updated.items.length < PAGE_SIZE || nextPage * PAGE_SIZE >= updated.total) {
       setHasNextPage(false);
     }
-  }, [page, hasNextPage]);
+  }, [page, hasNextPage, prototypes, selectedCategoryId, sortKey]);
 
   // 무한 스크롤 hook
   const { observerEl } = useInfiniteScroll({
@@ -77,6 +101,10 @@ export default function PostContainer() {
     loadMoreFn,
     setIsLoading,
   });
+
+  const scrollToTop = useCallback(() => {
+    window.scrollTo({ top: 0 });
+  }, []);
 
   /**
    * 좋아요 토글
@@ -102,24 +130,34 @@ export default function PostContainer() {
 
   return (
     <section aria-label="게시물 피드">
-      <PostCategory />
-      {posts.map((post) => (
-        <PostArticle key={post.id} aria-label={`${post.id}의 게시물`}>
-          <PostHeader
-            author={post.author}
-            categoryName={post.categoryName}
-            createdAt={post.createdAt}
-          />
-          <PostContent content={post.content} />
-          <PostImg images={post.images} />
-          <PostAction post={post} handleLike={handleLike} handleRetweet={handleRetweet} />
-        </PostArticle>
-      ))}
+      <PostCategory
+        categories={categories}
+        selectedCategoryId={selectedCategoryId}
+        setSelectedCategoryId={setSelectedCategoryId}
+        sortKey={sortKey}
+        setSortKey={setSortKey}
+        total={total}
+      />
       {/* 로딩 스켈레톤 */}
-      {isLoading && (
+      {isLoading ? (
         <>
           <PostSkeleton imageCount={0} />
-          <PostSkeleton imageCount={3} />
+          <PostSkeleton imageCount={2} />
+        </>
+      ) : (
+        <>
+          {posts.map((post) => (
+            <PostArticle key={post.id} aria-label={`${post.id}의 게시물`}>
+              <PostHeader
+                author={post.author}
+                categoryName={post.categoryName}
+                createdAt={post.createdAt}
+              />
+              <PostContent content={post.content} />
+              <PostImg images={post.images} />
+              <PostAction post={post} handleLike={handleLike} handleRetweet={handleRetweet} />
+            </PostArticle>
+          ))}
         </>
       )}
       {/* 인터섹션 옵저버 타겟 */}

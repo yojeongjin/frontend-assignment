@@ -1,30 +1,53 @@
 // type
-import { PostResType } from '@/type/post';
+import { GetPostsQuery, GetPostsResult, PostResType } from '@/type/post';
 
 // 로딩 시뮬
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 // 로컬에서 좋아요/리트윗 상태 저장용
 const state: Record<string, PostResType> = {};
 
+// 정렬 함수
+const byNewest = (a: PostResType, b: PostResType) =>
+  new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+
+const byOldest = (a: PostResType, b: PostResType) =>
+  new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
+
 /**
- * 게시물 가져오기
+ * 게시물 목록 조회
  *
- * @param posts 전체 게시물 배열
- * @param page 페이지 번호 (기본 1)
- * @param limit 한 페이지 당 개수 (기본 10)
- * @returns Promise<PostResType[]>
+ * @param {PostResType[]} posts - 전체 게시물 배열
+ * @param {GetPostsQuery} [query={}] - 조회 조건
+ * @param {number} [query.page=1] - 페이지 번호 (1-based)
+ * @param {number} [query.limit=10] - 페이지당 게시물 개수
+ * @param {number} [query.categoryId] - 카테고리 ID (0 또는 undefined면 전체)
+ * @param {'newest'|'oldest'} [query.sort='newest'] - 정렬 기준
+ *
+ * @returns {Promise<GetPostsResult>} 조회된 게시물과 전체 개수를 포함한 결과
  */
 export const getPosts = async (
   posts: PostResType[],
-  page = 1,
-  limit = 10
-): Promise<PostResType[]> => {
+  query: GetPostsQuery = {}
+): Promise<GetPostsResult> => {
+  const { page = 1, limit = 10, categoryId, sort = 'newest' } = query;
+
   await delay(1000);
 
+  // 1) 카테고리 필터링
+  const filtered =
+    categoryId && categoryId !== 0 ? posts.filter((post) => post.category === categoryId) : posts;
+
+  // 2) 정렬
+  const sorted = [...filtered].sort(sort === 'newest' ? byNewest : byOldest);
+
+  // 3) 페이징
   const start = (page - 1) * limit;
   const end = start + limit;
+  const items = sorted.slice(start, end);
 
-  return posts.slice(start, end);
+  const total = sorted.length;
+
+  return { items, total };
 };
 
 /**

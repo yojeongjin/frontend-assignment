@@ -49,7 +49,7 @@ const ModalBase = styled.div`
 `;
 
 const ModalInner = styled.div`
-  background: #fff;
+  // background: #fff;
   width: 100%;
   max-width: 720px;
   border-radius: 8px;
