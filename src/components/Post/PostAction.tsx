@@ -82,9 +82,14 @@ const ActionBtn = styled.button<{ $variant?: 'retweet' | 'like'; $active?: boole
           : theme.gray_01
       : theme.gray_02};
 
-  &:hover {
-    color: ${({ $variant, theme }) =>
-      $variant === 'retweet' ? theme.retweet : $variant === 'like' ? theme.like : 'gray_01'};
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      color: ${({ $variant, theme }) =>
+        $variant === 'retweet' ? theme.retweet : $variant === 'like' ? theme.like : theme.gray_01};
+    }
+  }
+  &:active {
+    transform: translateY(1px);
   }
 `;
 

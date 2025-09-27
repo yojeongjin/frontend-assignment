@@ -22,8 +22,11 @@ const Article = styled.article`
   gap: 12px;
   padding: 16px;
   border-bottom: 1px solid ${(props) => props.theme.gray_03};
-  &:hover {
-    background-color: #f7f7f7;
-    cursor: pointer;
+
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      background-color: #f7f7f7;
+      cursor: pointer;
+    }
   }
 `;

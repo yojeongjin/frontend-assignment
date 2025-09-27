@@ -16,7 +16,6 @@ type PostImgProps = Pick<PostResType, 'images'>;
 
 export default function PostImg({ images }: PostImgProps) {
   const [openImg, setOpenImg] = useState(false);
-  const [clickedIndex, setClickedIndex] = useState(0);
 
   if (!images || images.length === 0) return null;
   const count = Math.min(images.length, 4);
@@ -26,13 +25,12 @@ export default function PostImg({ images }: PostImgProps) {
       <ImgWrapper $count={count}>
         {images.map((src, i) => (
           <Img
-            key={src + i}
+            key={`${i}-${src}`}
             src={src}
             alt={`게시물 이미지 ${i + 1}`}
             loading="lazy"
             onClick={(e) => {
               e.stopPropagation();
-              setClickedIndex(i);
               setOpenImg(true);
             }}
           />
@@ -53,10 +51,9 @@ export default function PostImg({ images }: PostImgProps) {
                 clickable: true,
               }}
               modules={[Navigation, Pagination]}
-              initialSlide={clickedIndex}
             >
               {images.map((img, i) => (
-                <SwiperSlide key={img + i}>
+                <SwiperSlide key={`${i}-${img}`}>
                   <ModalImg src={img} alt={`게시물 이미지 ${i + 1}`} loading="lazy" />
                 </SwiperSlide>
               ))}

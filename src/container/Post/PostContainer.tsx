@@ -119,7 +119,12 @@ export default function PostContainer() {
         sort: sortKey,
       });
 
-      setPosts((prev) => prev.concat(updated.items));
+      setPosts((prev) => {
+        const seen = new Set(prev.map((p) => p.id));
+        const dedup = updated.items.filter((p) => !seen.has(p.id));
+        return [...prev, ...dedup];
+      });
+
       setTotal(updated.total);
       setPage(nextPage);
 

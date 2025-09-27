@@ -23,7 +23,6 @@ export default function CreateImg({
   maxFiles,
 }: UploaderProps) {
   const canAdd = files.length < maxFiles;
-  const remaining = maxFiles - files.length;
 
   return (
     <ImgBase>
@@ -68,10 +67,7 @@ export default function CreateImg({
                 ref={fileInputRef}
                 onChange={(e) => {
                   onFilesSelected(e);
-                  // 같은 파일 재선택 이슈(iOS 포함) 방지: 선택 후 value 초기화
-                  e.currentTarget.value = '';
                 }}
-                aria-label={`이미지 추가 업로더 (남은 ${remaining}장)`}
               />
             </AddTile>
           )}
