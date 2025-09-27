@@ -28,36 +28,36 @@ http://localhost:3000
 
 ## 사용한 기술 스택 및 선택 이유
 
-### 프레임워크 & 언어
+### 💡 프레임워크 & 언어
 
 - **Next.js (React 기반 프레임워크)**
-  - **프로젝트 구조와 라우팅 편의성**: `/pages` 디렉토리 기반 라우팅으로 게시물 목록(`/`), 작성(`/create`), 상세(`/post/[id]`)와 같은 페이지 구성을 명확하게 할 수 있어 선택했습니다.
-  - **확장성**: 추후 SEO가 필요한 피드 서비스로 발전한다고 가정하면 `getServerSideProps`나 `getStaticProps`로 손쉽게 전환이 가능하기 때문에 선택했습니다.
+  - **프로젝트 구조와 라우팅 편의성**: `/pages` 디렉토리 기반 라우팅으로 게시물 목록(`/`), 작성(`/create`), 상세(`/post/[id]`)와 같은 페이지 구성을 명확하게 할 수 있어 선택하였습니다.
+  - **확장성**: 추후 SEO가 필요한 피드 서비스로 발전한다고 가정하면 `getServerSideProps`나 `getStaticProps`로 손쉽게 전환이 가능하기 때문에 선택하였습니다.
 
 - **TypeScript**
   - `Post`, `User`, `Category`와 같이 도메인별 타입을 정의하여 컴포넌트와 서비스 함수에 적용했습니다.
-    - **타입 안정성**: `게시물(Post)`, `사용자(User)` 등 데이터 타입을 명확하게 정의하여 런타임 에러를 방지할 수 있어 선택했습니다.
-    - **자동 완성 지원**: IDE의 IntelliSense를 통한 빠른 개발 경험이 가능하기에 선택했습니다.
-    - **협업 관점**: 팀 환경을 가정했을 때 타입 정의가 곧 문서 역할을 하여 가독성과 유지보수성을 높일 수 있어 선택했습니다.
+    - **타입 안정성**: `게시물(Post)`, `사용자(User)` 등 데이터 타입을 명확하게 정의하여 런타임 에러를 방지할 수 있어 선택하였습니다.
+    - **자동 완성 지원**: IDE의 IntelliSense를 통한 빠른 개발 경험이 가능하기에 선택하였습니다.
+    - **협업 관점**: 팀 환경을 가정했을 때 타입 정의가 곧 문서 역할을 하여 가독성과 유지보수성을 높일 수 있어 선택하였습니다.
 
-### 스타일링
+### 💡 스타일링
 
 - **styled-components**
-  - **컴포넌트 단위 스타일 관리**: 각 UI를 독립적으로 관리할 수 있어 PostArticle, PostImg, PostAction 등 피드 요소들을 재사용 가능하게 만들 수 있기 때문에 선택했습니다.
-  - **동적 스타일링**: props 기반 스타일링이 가능해 상태(예: 글자 수 초과 여부, 이미지 개수)에 따라 UI가 자동으로 변하도록 할 수 있어, 비즈니스 로직과 스타일을 분리하면서도 손쉽게 UI를 제어할 수 있기 때문에 선택했습니다.
-  - **테마 적용 용이성**: `ThemeProvider`를 통해 색상, 간격 등을 전역 관리할 수 있어 추후 다크모드나 브랜드 컬러 적용도 유연하게 할 수 있기 때문에 선택했습니다.
+  - **컴포넌트 단위 스타일 관리**: 각 UI를 독립적으로 관리할 수 있어 PostArticle, PostImg, PostAction 등 피드 요소들을 재사용 가능하게 만들 수 있기 때문에 선택하였습니다.
+  - **동적 스타일링**: props 기반 스타일링이 가능해 상태(예: 글자 수 초과 여부, 이미지 개수)에 따라 UI가 자동으로 변하도록 할 수 있어, 비즈니스 로직과 스타일을 분리하면서도 손쉽게 UI를 제어할 수 있기 때문에 선택하였습니다.
+  - **테마 적용 용이성**: `ThemeProvider`를 통해 색상, 간격 등을 전역 관리할 수 있어 추후 다크모드나 브랜드 컬러 적용도 유연하게 할 수 있기 때문에 선택하였습니다.
 
-### 상태 관리
+### 💡 상태 관리
 
 - **React Context API**
-  - 게시물 리스트, 로그인 사용자 정보와 같이 **여러 컴포넌트에서 공통으로 필요**한 상태를 Context로 관리했습니다.
-  - `useContext`를 통해 props drilling 문제를 해결하면서도 Redux보다 가볍고 단순한 구조를 유지할 수 있어 선택했습니다.
+  - 게시물 리스트, 로그인 사용자 정보와 같이 **여러 컴포넌트에서 공통으로 필요**한 상태를 Context로 관리하였습니다.
+  - `useContext`를 통해 props drilling 문제를 해결하면서도 Redux보다 가볍고 단순한 구조를 유지할 수 있어 선택하였습니다.
   - 이번 과제 범위에서는 비동기 처리나 복잡한 상태 전환 로직이 많지 않았기 때문에 Redux-Saga나 Zustand 같은 상태 관리 도구 보다는 Context API가 적합하다고 판단하였습니다.
 
-### 서비스 계층
+### 💡 서비스 계층
 
 - **서비스 함수 + Mock 데이터 분리 구조**
-  - `/services/post.service.ts`를 두어 UI와 데이터 로직을 분리했습니다.
+  - `/services/post.service.ts`를 두어 UI와 데이터 로직을 분리하였습니다.
   - 추후 실제 API 연동 시 서비스 계층만 교체하면 되기때문에 구조적 확장성을 고려하여 구현하였습니다.
 
 ## 디렉토리 구조 및 설명
@@ -94,6 +94,11 @@ http://localhost:3000
 
 ### 1) 홈(피드) `/`
 
+<p align="left">
+<img src="./public/readme/home_1.gif" width="32%" style="border:1px solid #ddd; border-radius:8px;" />
+<img src="./public/readme/home_2.gif" width="32%" style="border:1px solid #ddd; border-radius:8px;" />
+</p>
+
 - **무한스크롤(IntersectionObserver)** 로 게시물 목록 표시
 - **Pull to Refresh (모바일 UX)**
   - 모바일 스크롤 영역에서 당겨서 새로고침(Pull to Refresh) 제스처 지원
@@ -112,6 +117,10 @@ http://localhost:3000
 
 ### 2) 게시물 작성 `/create`
 
+<p align="left">
+<img src="./public/readme/create_1.gif" width="32%" style="border:1px solid #ddd; border-radius:8px;" />
+</p>
+
 - **텍스트 입력 (280자 제한)**
   - 실시간 카운터 표시 (초과 시 0으로 고정 표기)
   - 경고 상태 시 스타일 강조
@@ -124,6 +133,10 @@ http://localhost:3000
 
 ### 3) 게시물 상세 `/post/[id]`
 
+<p align="left">
+<img src="./public/readme/post_1.gif" width="32%" style="border:1px solid #ddd; border-radius:8px;" />
+<img src="./public/readme/post_2.gif" width="32%" style="border:1px solid #ddd; border-radius:8px;" />
+</p>
 - **단일 게시물 조회**
   - 헤더/본문/이미지/상호작용 메타 동일 규격으로 표기
 - **댓글 영역(UI)**

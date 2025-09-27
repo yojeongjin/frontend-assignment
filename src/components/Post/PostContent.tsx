@@ -50,5 +50,6 @@ const HashTag = styled.span`
 `;
 
 const URL = styled(Link)`
-  ${HashTag}
+  color: ${(props) => props.theme.primary_01};
+  font-weight: 500;
 `;
