@@ -26,6 +26,8 @@ http://localhost:3000
 - `npm run dev:local` 실행 시 같은 네트워크 내 모바일 기기에서 `http://<PC_IP>:3000` 으로 접속 가능합니다.
 ```
 
+<br />
+
 ## 사용한 기술 스택 및 선택 이유
 
 ### 💡 프레임워크 & 언어
@@ -60,6 +62,8 @@ http://localhost:3000
   - `/services/post.service.ts`를 두어 UI와 데이터 로직을 분리하였습니다.
   - 추후 실제 API 연동 시 서비스 계층만 교체하면 되기때문에 구조적 확장성을 고려하여 구현하였습니다.
 
+<br />
+
 ## 디렉토리 구조 및 설명
 
 ```js
@@ -89,6 +93,8 @@ http://localhost:3000
 - `hooks/`: 중복되는 로직을 재사용하기 위해 커스텀 훅으로 분리.
 - `services/`: 데이터 로직 전담 계층.
 - `AppStateContext.tsx` : 전역 상태 관리의 중심. 사용자 정보와 게시물 리스트를 Context로 제공하여 props drilling 없이 전역 데이터 접근 가능.
+
+<br />
 
 ## 구현한 기능 목록
 
@@ -137,12 +143,17 @@ http://localhost:3000
 <img src="./public/readme/post_1.gif" width="32%" style="border:1px solid #ddd; border-radius:8px;" />
 <img src="./public/readme/post_2.gif" width="32%" style="border:1px solid #ddd; border-radius:8px;" />
 </p>
+
 - **단일 게시물 조회**
   - 헤더/본문/이미지/상호작용 메타 동일 규격으로 표기
 - **댓글 영역(UI)**
   - 댓글 작성 시 Context에 반영하여 새 댓글이 즉시 UI에 반영
 
 ### 4) 반응형 및 레이아웃
+
+<p align="left">
+<img src="./public/readme/responsive.gif" width="60%" style="border:1px solid #ddd; border-radius:8px;" />
+</p>
 
 - `Header`, `Sidebar`, `MobileSidebar`로 반응형 네비게이션 구현
 - **상태/뷰포트** 에 따른 동적 스타일 적용
